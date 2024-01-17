@@ -31,7 +31,7 @@ const Header: React.FC<HeaderProps> = (props) => {
     <React.Fragment>
       <CssBaseline />
       <ElevationScroll {...props}>
-        <AppBar position="fixed">
+        <AppBar position="fixed" color="secondary">
           <Toolbar>
             <Typography variant="h6" component="div">
               Scroll to elevate App bar
