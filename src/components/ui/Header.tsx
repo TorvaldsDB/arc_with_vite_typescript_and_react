@@ -1,14 +1,18 @@
-import * as React from "react";
+import { Theme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import CssBaseline from "@mui/material/CssBaseline";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
+import { createStyles, makeStyles } from "@mui/styles";
+import * as React from "react";
 
 interface Props {
   children: React.ReactElement;
+}
+
+interface HeaderProps {
+  children?: React.ReactElement;
 }
 
 function ElevationScroll(props: Props) {
@@ -23,35 +27,28 @@ function ElevationScroll(props: Props) {
   });
 }
 
-interface HeaderProps {
-  children?: React.ReactElement;
-}
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    toolbarMargin: {
+      ...theme.mixins.toolbar,
+    },
+  })
+);
 const Header: React.FC<HeaderProps> = (props) => {
+  const classes = useStyles();
   return (
     <React.Fragment>
       <CssBaseline />
       <ElevationScroll {...props}>
-        <AppBar position="fixed" color="secondary">
+        <AppBar position="fixed" color="primary">
           <Toolbar>
-            <Typography variant="h6" component="div">
+            <Typography variant="h3" component="div">
               Arc Development
             </Typography>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
-      <Toolbar />
-      <Container>
-        <Box sx={{ my: 2 }}>
-          {[...new Array(120)]
-            .map(
-              () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
-            )
-            .join("\n")}
-        </Box>
-      </Container>
+      <div className={classes.toolbarMargin} />
     </React.Fragment>
   );
 };
