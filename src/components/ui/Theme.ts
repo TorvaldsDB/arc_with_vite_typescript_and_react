@@ -11,6 +11,24 @@ declare module "@mui/material/styles/createPalette" {
   }
 }
 
+declare module "@mui/material/styles" {
+  interface TypographyVariants {
+    tab: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    tab?: React.CSSProperties;
+  }
+}
+
+// Update the Typography's variant prop options
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    tab: true;
+  }
+}
+
 const Theme = createTheme({
   palette: {
     common: {
@@ -22,6 +40,15 @@ const Theme = createTheme({
     },
     secondary: {
       main: arcOrange,
+    },
+  },
+  typography: {
+    tab: {
+      fontFamily: "Raleway",
+      textTransform: "none",
+      fontWeight: 700,
+      color: "white",
+      fontSize: "1rem",
     },
   },
 });

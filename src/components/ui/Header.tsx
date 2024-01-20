@@ -1,11 +1,12 @@
-import { Theme } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import CssBaseline from "@mui/material/CssBaseline";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { createStyles, makeStyles } from "@mui/styles";
 import * as React from "react";
+import logo from "../../assets/logo.svg";
 
 interface Props {
   children: React.ReactElement;
@@ -31,20 +32,39 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     toolbarMargin: {
       ...theme.mixins.toolbar,
+      marginBottom: "3em",
+    },
+    logo: {
+      height: "7em",
+    },
+    tabContainer: {
+      marginLeft: "auto",
     },
   })
 );
-const Header: React.FC<HeaderProps> = (props) => {
+
+const TabStyles: SxProps<Theme> = (theme: Theme) => ({
+  ...theme.typography.tab,
+  minWidth: 10,
+  marginLeft: "25px",
+});
+
+const Header: React.FC<HeaderProps> = () => {
   const classes = useStyles();
+
   return (
     <React.Fragment>
-      <CssBaseline />
-      <ElevationScroll {...props}>
+      <ElevationScroll>
         <AppBar position="fixed" color="primary">
-          <Toolbar>
-            <Typography variant="h3" component="div">
-              Arc Development
-            </Typography>
+          <Toolbar disableGutters>
+            <img alt="company logo" src={logo} className={classes.logo} />
+            <Tabs className={classes.tabContainer}>
+              <Tab sx={TabStyles} label="Home" />
+              <Tab sx={TabStyles} label="Services" />
+              <Tab sx={TabStyles} label="The Revolution" />
+              <Tab sx={TabStyles} label="About Us" />
+              <Tab sx={TabStyles} label="Contact Us" />
+            </Tabs>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
