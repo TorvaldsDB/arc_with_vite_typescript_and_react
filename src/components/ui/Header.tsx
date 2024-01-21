@@ -108,6 +108,7 @@ const Header: FC<HeaderProps> = () => {
               value={value}
               onChange={handleChange}
               className={classes.tabContainer}
+              textColor="inherit"
               indicatorColor="primary"
             >
               <Tab sx={TabStyles} label="Home" component={Link} to="/" />
