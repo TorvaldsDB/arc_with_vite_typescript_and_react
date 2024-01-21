@@ -61,6 +61,11 @@ const ButtonStyles: SxProps<Theme> = (theme: Theme) => ({
 
 const Header: React.FC<HeaderProps> = () => {
   const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
     <React.Fragment>
@@ -68,7 +73,12 @@ const Header: React.FC<HeaderProps> = () => {
         <AppBar position="fixed" color="primary">
           <Toolbar disableGutters>
             <img alt="company logo" src={logo} className={classes.logo} />
-            <Tabs className={classes.tabContainer}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              className={classes.tabContainer}
+              indicatorColor="primary"
+            >
               <Tab sx={TabStyles} label="Home" />
               <Tab sx={TabStyles} label="Services" />
               <Tab sx={TabStyles} label="The Revolution" />
