@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: "3em",
     },
     logo: {
-      height: "7em",
+      height: "8em",
     },
     tabContainer: {
       marginLeft: "auto",
@@ -68,6 +68,13 @@ const ButtonStyles: SxProps<Theme> = (theme: Theme) => ({
   height: "45px",
   "&:hover": {
     backgroundColor: theme.palette.secondary.light,
+  },
+});
+
+const logoButtonStyles: SxProps<Theme> = () => ({
+  padding: 0,
+  "&:hover": {
+    backgroundColor: "transparent",
   },
 });
 
@@ -110,7 +117,9 @@ const Header: FC<HeaderProps> = () => {
       <ElevationScroll>
         <AppBar position="fixed" color="primary">
           <Toolbar disableGutters>
-            <img alt="company logo" src={logo} className={classes.logo} />
+            <Button sx={logoButtonStyles} component={Link} to="/" disableRipple>
+              <img alt="company logo" src={logo} className={classes.logo} />
+            </Button>
             <Tabs
               value={value}
               onChange={handleChange}
