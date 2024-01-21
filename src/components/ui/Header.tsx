@@ -79,6 +79,13 @@ const pathValueMap: PathValueMap = {
   "/contact": 4,
 };
 
+function a11yProps(index: number) {
+  return {
+    id: `header-tab-${index}`,
+    "aria-controls": `header-tabpanel-${index}`,
+  };
+}
+
 const Header: FC<HeaderProps> = () => {
   const classes = useStyles();
   const [value, setValue] = useState(0);
@@ -110,31 +117,42 @@ const Header: FC<HeaderProps> = () => {
               className={classes.tabContainer}
               textColor="inherit"
               indicatorColor="primary"
+              aria-label="arc development header tabs"
             >
-              <Tab sx={TabStyles} label="Home" component={Link} to="/" />
+              <Tab
+                sx={TabStyles}
+                label="Home"
+                component={Link}
+                to="/"
+                {...a11yProps(0)}
+              />
               <Tab
                 sx={TabStyles}
                 label="Services"
                 component={Link}
                 to="/services"
+                {...a11yProps(1)}
               />
               <Tab
                 sx={TabStyles}
                 label="The Revolution"
                 component={Link}
                 to="/revolution"
+                {...a11yProps(2)}
               />
               <Tab
                 sx={TabStyles}
                 label="About Us"
                 component={Link}
                 to="/about"
+                {...a11yProps(3)}
               />
               <Tab
                 sx={TabStyles}
                 label="Contact Us"
                 component={Link}
                 to="/contact"
+                {...a11yProps(4)}
               />
             </Tabs>
             <Button variant="contained" color="secondary" sx={ButtonStyles}>
