@@ -1,19 +1,31 @@
-import { SxProps, Theme, Button } from "@mui/material";
+import { Button, SxProps, Theme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { createStyles, makeStyles } from "@mui/styles";
-import * as React from "react";
+import {
+  FC,
+  Fragment,
+  ReactElement,
+  SyntheticEvent,
+  cloneElement,
+  useEffect,
+  useState,
+} from "react";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
-import { Link } from "react-router-dom";
 interface Props {
-  children: React.ReactElement;
+  children: ReactElement;
 }
 
 interface HeaderProps {
-  children?: React.ReactElement;
+  children?: ReactElement;
+}
+
+interface PathValueMap {
+  [key: string]: number;
 }
 
 function ElevationScroll(props: Props) {
@@ -23,7 +35,7 @@ function ElevationScroll(props: Props) {
     threshold: 0,
   });
 
-  return React.cloneElement(children, {
+  return cloneElement(children, {
     elevation: trigger ? 4 : 0,
   });
 }
@@ -59,16 +71,35 @@ const ButtonStyles: SxProps<Theme> = (theme: Theme) => ({
   },
 });
 
-const Header: React.FC<HeaderProps> = () => {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+const pathValueMap: PathValueMap = {
+  "/": 0,
+  "/services": 1,
+  "/revolution": 2,
+  "/about": 3,
+  "/contact": 4,
+};
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+const Header: FC<HeaderProps> = () => {
+  const classes = useStyles();
+  const [value, setValue] = useState(0);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    // Get the corresponding value based on the current pathname
+    const newValue = pathValueMap[pathname];
+
+    // Update the value only if it's different
+    if (newValue !== undefined && newValue !== value) {
+      setValue(newValue);
+    }
+  }, [pathname, value]);
+
+  const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <ElevationScroll>
         <AppBar position="fixed" color="primary">
           <Toolbar disableGutters>
@@ -112,7 +143,7 @@ const Header: React.FC<HeaderProps> = () => {
         </AppBar>
       </ElevationScroll>
       <div className={classes.toolbarMargin} />
-    </React.Fragment>
+    </Fragment>
   );
 };
 export default Header;
