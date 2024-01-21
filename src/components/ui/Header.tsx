@@ -7,7 +7,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { createStyles, makeStyles } from "@mui/styles";
 import * as React from "react";
 import logo from "../../assets/logo.svg";
-
+import { Link } from "react-router-dom";
 interface Props {
   children: React.ReactElement;
 }
@@ -79,11 +79,31 @@ const Header: React.FC<HeaderProps> = () => {
               className={classes.tabContainer}
               indicatorColor="primary"
             >
-              <Tab sx={TabStyles} label="Home" />
-              <Tab sx={TabStyles} label="Services" />
-              <Tab sx={TabStyles} label="The Revolution" />
-              <Tab sx={TabStyles} label="About Us" />
-              <Tab sx={TabStyles} label="Contact Us" />
+              <Tab sx={TabStyles} label="Home" component={Link} to="/" />
+              <Tab
+                sx={TabStyles}
+                label="Services"
+                component={Link}
+                to="/services"
+              />
+              <Tab
+                sx={TabStyles}
+                label="The Revolution"
+                component={Link}
+                to="/revolution"
+              />
+              <Tab
+                sx={TabStyles}
+                label="About Us"
+                component={Link}
+                to="/about"
+              />
+              <Tab
+                sx={TabStyles}
+                label="Contact Us"
+                component={Link}
+                to="/contact"
+              />
             </Tabs>
             <Button variant="contained" color="secondary" sx={ButtonStyles}>
               Free Estimate
