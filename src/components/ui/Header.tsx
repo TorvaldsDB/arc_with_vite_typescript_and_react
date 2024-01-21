@@ -1,10 +1,4 @@
-import {
-  SxProps,
-  Theme,
-  Button,
-  Typography,
-  TypographyProps,
-} from "@mui/material";
+import { SxProps, Theme, Button } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -13,9 +7,7 @@ import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { createStyles, makeStyles } from "@mui/styles";
 import * as React from "react";
 import logo from "../../assets/logo.svg";
-import CustomizedButtons from "../MuiComponents/CustomizedButtons";
 
-import { styled } from "@mui/material/styles";
 interface Props {
   children: React.ReactElement;
 }
@@ -48,19 +40,6 @@ const useStyles = makeStyles((theme: Theme) =>
     tabContainer: {
       marginLeft: "auto",
     },
-    button: {
-      ...theme.typography.estimate,
-      borderRadius: "50px",
-      marginLeft: "50px",
-      marginRight: "25px",
-      height: "45px",
-      "&:hover": {
-        backgroundColor: theme.palette.secondary,
-      },
-    },
-    poster: {
-      ...theme.typography.poster,
-    },
   })
 );
 
@@ -76,12 +55,10 @@ const ButtonStyles: SxProps<Theme> = (theme: Theme) => ({
   marginRight: "25px",
   height: "45px",
   "&:hover": {
-    backgroundColor: theme.palette.secondary,
+    backgroundColor: theme.palette.secondary.light,
   },
 });
-const ColorButton = styled(Typography)<TypographyProps>(({ theme }) => ({
-  ...theme.typography.poster,
-}));
+
 const Header: React.FC<HeaderProps> = () => {
   const classes = useStyles();
 
@@ -99,23 +76,12 @@ const Header: React.FC<HeaderProps> = () => {
               <Tab sx={TabStyles} label="Contact Us" />
             </Tabs>
             <Button variant="contained" color="secondary" sx={ButtonStyles}>
-              FREE ESTIMATE
+              Free Estimate
             </Button>
-            <CustomizedButtons />
           </Toolbar>
         </AppBar>
       </ElevationScroll>
       <div className={classes.toolbarMargin} />
-      <Typography className={classes.poster}>poster</Typography>
-      <Typography
-        sx={(theme: Theme) => ({
-          ...theme.typography.poster,
-        })}
-      >
-        poster
-      </Typography>
-      <Typography variant="poster">poster</Typography>
-      <ColorButton>poster</ColorButton>
     </React.Fragment>
   );
 };

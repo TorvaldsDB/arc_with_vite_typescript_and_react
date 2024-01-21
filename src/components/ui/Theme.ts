@@ -14,14 +14,12 @@ declare module "@mui/material/styles/createPalette" {
 declare module "@mui/material/styles" {
   interface TypographyVariants {
     tab: React.CSSProperties;
-    poster: React.CSSProperties;
     estimate: React.CSSProperties;
   }
 
   // allow configuration using `createTheme`
   interface TypographyVariantsOptions {
     tab?: React.CSSProperties;
-    poster?: React.CSSProperties;
     estimate?: React.CSSProperties;
   }
 }
@@ -30,7 +28,6 @@ declare module "@mui/material/styles" {
 declare module "@mui/material/Typography" {
   interface TypographyPropsVariantOverrides {
     tab: true;
-    poster: true;
     estimate: true;
   }
 }
@@ -49,10 +46,6 @@ const Theme = createTheme({
     },
   },
   typography: {
-    poster: {
-      fontSize: "4rem !important",
-      color: "blue",
-    },
     tab: {
       fontFamily: "Raleway",
       textTransform: "none",

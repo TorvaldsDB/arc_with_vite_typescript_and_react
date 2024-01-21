@@ -32,3 +32,19 @@ export default {
 ## Why turn to Vite
 
 https://blog.logrocket.com/build-react-typescript-app-vite/
+
+## Material UI
+
+`Tap` 最终的 html 元素, 不再是 `a` tag, 而是 `button`
+
+`createStyles`, `makeStyles` have to be imported from `@mui/styles`
+
+```js
+import { createStyles, makeStyles } from "@mui/styles";
+```
+
+`styled` have to be imported from `@mui/material/styles` instead of ~~`@mui/styles`~~
+
+```js
+import { styled } from "@mui/material/styles";
+```

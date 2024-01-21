@@ -42,6 +42,7 @@ const BootstrapButton = styled(Button)({
 });
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+  ...theme.typography.estimate,
   color: theme.palette.getContrastText(purple[500]),
   backgroundColor: purple[500],
   "&:hover": {
