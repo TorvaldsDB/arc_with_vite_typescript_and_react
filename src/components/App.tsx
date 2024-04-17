@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@mui/material";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./ui/Header";
 import theme from "./ui/Theme";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
   return (

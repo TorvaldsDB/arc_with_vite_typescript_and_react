@@ -52,6 +52,20 @@ const useStyles = makeStyles((theme: Theme) =>
     tabContainer: {
       marginLeft: "auto",
     },
+    menu: {
+      "& .MuiPaper-root": {
+        backgroundColor: theme.palette.common.blue,
+        color: "white",
+        borderRadius: "0px",
+      },
+    },
+    menuItem: {
+      ...theme.typography.tab,
+      opacity: 0.7,
+      "&:hover": {
+        opacity: 1,
+      },
+    },
   })
 );
 
@@ -122,6 +136,11 @@ const Header: FC<HeaderProps> = () => {
     setAnchorEl(null);
   };
 
+  const handleMenuItemClick = () => {
+    handleClose();
+    setValue(1);
+  };
+
   return (
     <Fragment>
       <ElevationScroll>
@@ -186,13 +205,50 @@ const Header: FC<HeaderProps> = () => {
               keepMounted
               open={open}
               onClose={handleClose}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              className={classes.menu}
               MenuListProps={{ onMouseLeave: handleClose }} // mouse leave menu event
+              elevation={0}
             >
-              <MenuItem onClick={handleClose}>
+              <MenuItem
+                onClick={handleMenuItemClick}
+                component={Link}
+                to="/services"
+                className={classes.menuItem}
+              >
+                Services
+              </MenuItem>
+              <MenuItem
+                onClick={handleMenuItemClick}
+                component={Link}
+                to="/customsoftware"
+                className={classes.menuItem}
+              >
                 Custom Software Development
               </MenuItem>
-              <MenuItem onClick={handleClose}>Mobile App Development</MenuItem>
-              <MenuItem onClick={handleClose}>Website Development</MenuItem>
+              <MenuItem
+                onClick={handleMenuItemClick}
+                component={Link}
+                to="/mobileapps"
+                className={classes.menuItem}
+              >
+                Mobile App Development
+              </MenuItem>
+              <MenuItem
+                onClick={handleMenuItemClick}
+                component={Link}
+                to="/websites"
+                className={classes.menuItem}
+              >
+                Website Development
+              </MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>
