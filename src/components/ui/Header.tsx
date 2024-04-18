@@ -1,10 +1,9 @@
-import { Button, Menu, MenuItem, SxProps, Theme } from "@mui/material";
+import { Button, Menu, MenuItem, SxProps, Theme, styled } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
-import { createStyles, makeStyles } from "@mui/styles";
 import {
   FC,
   Fragment,
@@ -12,9 +11,10 @@ import {
   SyntheticEvent,
   cloneElement,
   useEffect,
+  useMemo,
   useState,
 } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 interface Props {
   children: ReactElement;
@@ -22,10 +22,6 @@ interface Props {
 
 interface HeaderProps {
   children?: ReactElement;
-}
-
-interface PathValueMap {
-  [key: string]: number;
 }
 
 function ElevationScroll(props: Props) {
@@ -40,34 +36,14 @@ function ElevationScroll(props: Props) {
   });
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    toolbarMargin: {
-      ...theme.mixins.toolbar,
-      marginBottom: "3em",
-    },
-    logo: {
-      height: "8em",
-    },
-    tabContainer: {
-      marginLeft: "auto",
-    },
-    menu: {
-      "& .MuiPaper-root": {
-        backgroundColor: theme.palette.common.blue,
-        color: "white",
-        borderRadius: "0px",
-      },
-    },
-    menuItem: {
-      ...theme.typography.tab,
-      opacity: 0.7,
-      "&:hover": {
-        opacity: 1,
-      },
-    },
-  })
-);
+const LogoImage = styled("img")`
+  height: 8em;
+`;
+
+const Placeholder = styled("div")(({ theme }) => ({
+  ...theme.mixins.toolbar,
+  marginBottom: "3em",
+}));
 
 const TabStyles: SxProps<Theme> = (theme: Theme) => ({
   ...theme.typography.tab,
@@ -92,14 +68,6 @@ const logoButtonStyles: SxProps<Theme> = () => ({
   },
 });
 
-const pathValueMap: PathValueMap = {
-  "/": 0,
-  "/services": 1,
-  "/revolution": 2,
-  "/about": 3,
-  "/contact": 4,
-};
-
 function a11yProps(index: number) {
   return {
     id: `header-tab-${index}`,
@@ -108,21 +76,11 @@ function a11yProps(index: number) {
 }
 
 const Header: FC<HeaderProps> = () => {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
-  const { pathname } = useLocation();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  useEffect(() => {
-    // Get the corresponding value based on the current pathname
-    const newValue = pathValueMap[pathname];
-
-    // Update the value only if it's different
-    if (newValue !== undefined && newValue !== value) {
-      setValue(newValue);
-    }
-  }, [pathname, value]);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -136,10 +94,83 @@ const Header: FC<HeaderProps> = () => {
     setAnchorEl(null);
   };
 
-  const handleMenuItemClick = () => {
+  const handleMenuItemClick = (index: number) => {
+    setSelectedIndex(index);
     handleClose();
     setValue(1);
   };
+
+  interface RouteType {
+    name: string;
+    link: string;
+    activeIndex: number;
+    ariaOwns?: boolean;
+    ariaPopup?: boolean;
+    selectedIndex?: number | undefined;
+    mouseOver?: (event: React.MouseEvent<HTMLElement>) => void;
+  }
+  const routes: RouteType[] = useMemo(
+    () => [
+      { name: "Home", link: "/", activeIndex: 0 },
+      {
+        name: "Services",
+        link: "/services",
+        activeIndex: 1,
+        ariaOwns: true,
+        ariaPopup: true,
+        mouseOver: handleClick,
+      },
+      { name: "The Revolution", link: "/revolution", activeIndex: 2 },
+      { name: "About Us", link: "/about", activeIndex: 3 },
+      { name: "Contact Us", link: "/contact", activeIndex: 4 },
+    ],
+    []
+  );
+
+  const menuOptions: RouteType[] = useMemo(
+    () => [
+      { name: "Services", link: "/services", activeIndex: 1, selectedIndex: 0 },
+      {
+        name: "Custom Software Development",
+        link: "/customsoftware",
+        activeIndex: 1,
+        selectedIndex: 1,
+      },
+      {
+        name: "iOS/Android App Development",
+        link: "/mobileapps",
+        activeIndex: 1,
+        selectedIndex: 2,
+      },
+      {
+        name: "Website Development",
+        link: "/websites",
+        activeIndex: 1,
+        selectedIndex: 3,
+      },
+    ],
+    []
+  );
+
+  useEffect(() => {
+    [...menuOptions, ...routes].forEach((route) => {
+      switch (window.location.pathname) {
+        case `${route.link}`:
+          if (value !== route.activeIndex) {
+            setValue(route.activeIndex);
+            if (route.selectedIndex && route.selectedIndex !== selectedIndex) {
+              setSelectedIndex(route.selectedIndex);
+            }
+          }
+          break;
+        case "/estimate":
+          setValue(5);
+          break;
+        default:
+          break;
+      }
+    });
+  }, [value, menuOptions, selectedIndex, routes]);
 
   return (
     <Fragment>
@@ -147,54 +178,42 @@ const Header: FC<HeaderProps> = () => {
         <AppBar position="fixed" color="primary">
           <Toolbar disableGutters>
             <Button sx={logoButtonStyles} component={Link} to="/" disableRipple>
-              <img alt="company logo" src={logo} className={classes.logo} />
+              <LogoImage alt="company logo" src={logo} />
             </Button>
             <Tabs
               value={value}
               onChange={handleChange}
-              className={classes.tabContainer}
+              sx={{
+                marginLeft: "auto",
+              }}
               textColor="inherit"
               indicatorColor="primary"
               aria-label="arc development header tabs"
             >
-              <Tab
-                sx={TabStyles}
-                label="Home"
-                component={Link}
-                to="/"
-                {...a11yProps(0)}
-              />
-              <Tab
-                aria-owns={anchorEl ? "simple-menu" : undefined}
-                aria-haspopup={anchorEl ? "true" : undefined}
-                onMouseOver={handleClick}
-                sx={TabStyles}
-                label="Services"
-                component={Link}
-                to="/services"
-                {...a11yProps(1)}
-              />
-              <Tab
-                sx={TabStyles}
-                label="The Revolution"
-                component={Link}
-                to="/revolution"
-                {...a11yProps(2)}
-              />
-              <Tab
-                sx={TabStyles}
-                label="About Us"
-                component={Link}
-                to="/about"
-                {...a11yProps(3)}
-              />
-              <Tab
-                sx={TabStyles}
-                label="Contact Us"
-                component={Link}
-                to="/contact"
-                {...a11yProps(4)}
-              />
+              {routes.map((route, index) => {
+                const ariaProps: {
+                  ariaOwns?: string | undefined;
+                  ariaPopup?: string | undefined;
+                } = {};
+                if (route.ariaOwns) {
+                  ariaProps.ariaOwns = anchorEl ? "simple-menu" : undefined;
+                }
+                if (route.ariaPopup) {
+                  ariaProps.ariaPopup = anchorEl ? "true" : undefined;
+                }
+                return (
+                  <Tab
+                    key={`${route}${index}`}
+                    component={Link}
+                    to={route.link}
+                    label={route.name}
+                    sx={TabStyles}
+                    onMouseOver={route.mouseOver}
+                    {...a11yProps(index)}
+                    {...ariaProps}
+                  />
+                );
+              })}
             </Tabs>
             <Button variant="contained" color="secondary" sx={ButtonStyles}>
               Free Estimate
@@ -213,47 +232,42 @@ const Header: FC<HeaderProps> = () => {
                 vertical: "top",
                 horizontal: "left",
               }}
-              className={classes.menu}
+              sx={{
+                "& .MuiPaper-root": {
+                  backgroundColor: (theme) => theme.palette.common.blue,
+                  color: "white",
+                  borderRadius: "0px",
+                },
+              }}
               MenuListProps={{ onMouseLeave: handleClose }} // mouse leave menu event
               elevation={0}
             >
-              <MenuItem
-                onClick={handleMenuItemClick}
-                component={Link}
-                to="/services"
-                className={classes.menuItem}
-              >
-                Services
-              </MenuItem>
-              <MenuItem
-                onClick={handleMenuItemClick}
-                component={Link}
-                to="/customsoftware"
-                className={classes.menuItem}
-              >
-                Custom Software Development
-              </MenuItem>
-              <MenuItem
-                onClick={handleMenuItemClick}
-                component={Link}
-                to="/mobileapps"
-                className={classes.menuItem}
-              >
-                Mobile App Development
-              </MenuItem>
-              <MenuItem
-                onClick={handleMenuItemClick}
-                component={Link}
-                to="/websites"
-                className={classes.menuItem}
-              >
-                Website Development
-              </MenuItem>
+              {menuOptions.map((option, i) => (
+                <MenuItem
+                  key={`${option}${i}`}
+                  component={Link}
+                  to={option.link}
+                  // classes={{ root:  classes.menuItem }}
+                  sx={(theme) => ({
+                    "&.MuiMenuItem-root": {
+                      ...theme.typography.tab,
+                      opacity: 0.7,
+                      "&:hover": {
+                        opacity: 1,
+                      },
+                    },
+                  })}
+                  onClick={handleMenuItemClick.bind(this, i)}
+                  selected={i === selectedIndex && value === 1}
+                >
+                  {option.name}
+                </MenuItem>
+              ))}
             </Menu>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
-      <div className={classes.toolbarMargin} />
+      <Placeholder />
     </Fragment>
   );
 };
