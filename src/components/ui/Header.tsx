@@ -247,13 +247,15 @@ const Header: FC<HeaderProps> = () => {
                   key={`${option}${i}`}
                   component={Link}
                   to={option.link}
-                  // classes={{ root:  classes.menuItem }}
                   sx={(theme) => ({
                     "&.MuiMenuItem-root": {
                       ...theme.typography.tab,
                       opacity: 0.7,
                       "&:hover": {
                         opacity: 1,
+                      },
+                      "&.Mui-selected": {
+                        backgroundColor: theme.palette.primary.dark,
                       },
                     },
                   })}
