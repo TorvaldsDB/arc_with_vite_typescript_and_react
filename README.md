@@ -48,3 +48,14 @@ import { createStyles, makeStyles } from "@mui/styles";
 ```js
 import { styled } from "@mui/material/styles";
 ```
+
+## Responsive UI
+
+https://mui.com/material-ui/guides/responsive-ui/
+
+https://mui.com/material-ui/customization/breakpoints/#responsive-styles
+
+- Relative Units
+- Media Queries
+- Grid System
+- Breakpoints
