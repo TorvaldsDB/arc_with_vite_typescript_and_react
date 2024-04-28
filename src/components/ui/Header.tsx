@@ -1,4 +1,13 @@
-import { Button, Menu, MenuItem, SxProps, Theme, styled } from "@mui/material";
+import {
+  Button,
+  Menu,
+  MenuItem,
+  SxProps,
+  Theme,
+  styled,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -36,13 +45,25 @@ function ElevationScroll(props: Props) {
   });
 }
 
-const LogoImage = styled("img")`
-  height: 8em;
-`;
+const LogoImage = styled("img")(({ theme }) => ({
+  height: "8em",
+  [theme.breakpoints.down("md")]: {
+    height: "7em",
+  },
+  [theme.breakpoints.down("xs")]: {
+    height: "5.5em",
+  },
+}));
 
 const Placeholder = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
   marginBottom: "3em",
+  [theme.breakpoints.down("md")]: {
+    marginBottom: "2em",
+  },
+  [theme.breakpoints.down("xs")]: {
+    marginBottom: "1.25em",
+  },
 }));
 
 const TabStyles: SxProps<Theme> = (theme: Theme) => ({
@@ -77,7 +98,8 @@ function a11yProps(index: number) {
 
 const Header: FC<HeaderProps> = () => {
   const [value, setValue] = useState(0);
-
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("md"));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
@@ -105,7 +127,7 @@ const Header: FC<HeaderProps> = () => {
     link: string;
     activeIndex: number;
     ariaOwns?: boolean;
-    ariaPopup?: boolean;
+    ariaHaspopup?: boolean;
     selectedIndex?: number | undefined;
     mouseOver?: (event: React.MouseEvent<HTMLElement>) => void;
   }
@@ -117,7 +139,7 @@ const Header: FC<HeaderProps> = () => {
         link: "/services",
         activeIndex: 1,
         ariaOwns: true,
-        ariaPopup: true,
+        ariaHaspopup: true,
         mouseOver: handleClick,
       },
       { name: "The Revolution", link: "/revolution", activeIndex: 2 },
@@ -172,6 +194,98 @@ const Header: FC<HeaderProps> = () => {
     });
   }, [value, menuOptions, selectedIndex, routes]);
 
+  const tabs = (
+    <Fragment>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        sx={{
+          marginLeft: "auto",
+        }}
+        textColor="inherit"
+        indicatorColor="primary"
+        aria-label="arc development header tabs"
+      >
+        {routes.map((route, index) => {
+          const ariaProps: {
+            "aria-owns"?: string | undefined;
+            "aria-haspopup"?: "true" | undefined;
+          } = {};
+          if (route.ariaOwns) {
+            ariaProps["aria-owns"] = anchorEl ? "simple-menu" : undefined;
+          }
+          if (route.ariaHaspopup) {
+            ariaProps["aria-haspopup"] = anchorEl ? "true" : undefined;
+          }
+          return (
+            <Tab
+              key={`${route}${index}`}
+              component={Link}
+              to={route.link}
+              label={route.name}
+              sx={TabStyles}
+              onMouseOver={route.mouseOver}
+              {...a11yProps(index)}
+              {...ariaProps}
+            />
+          );
+        })}
+      </Tabs>
+      <Button variant="contained" color="secondary" sx={ButtonStyles}>
+        Free Estimate
+      </Button>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        sx={{
+          "& .MuiPaper-root": {
+            backgroundColor: "common.blue",
+            color: "white",
+            borderRadius: "0px",
+          },
+        }}
+        MenuListProps={{ onMouseLeave: handleClose }} // mouse leave menu event
+        elevation={0}
+      >
+        {menuOptions.map((option, i) => (
+          <MenuItem
+            key={`${option}${i}`}
+            component={Link}
+            to={option.link}
+            sx={(theme) => ({
+              "&.MuiMenuItem-root": {
+                ...theme.typography.tab,
+                opacity: 0.7,
+                "&:hover": {
+                  opacity: 1,
+                },
+                "&.Mui-selected": {
+                  backgroundColor: theme.palette.primary.dark,
+                },
+              },
+            })}
+            onClick={handleMenuItemClick.bind(this, i)}
+            selected={i === selectedIndex && value === 1}
+          >
+            {option.name}
+          </MenuItem>
+        ))}
+      </Menu>
+    </Fragment>
+  );
+
+  const drawer = <Fragment></Fragment>;
   return (
     <Fragment>
       <ElevationScroll>
@@ -180,92 +294,7 @@ const Header: FC<HeaderProps> = () => {
             <Button sx={logoButtonStyles} component={Link} to="/" disableRipple>
               <LogoImage alt="company logo" src={logo} />
             </Button>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              sx={{
-                marginLeft: "auto",
-              }}
-              textColor="inherit"
-              indicatorColor="primary"
-              aria-label="arc development header tabs"
-            >
-              {routes.map((route, index) => {
-                const ariaProps: {
-                  ariaOwns?: string | undefined;
-                  ariaPopup?: string | undefined;
-                } = {};
-                if (route.ariaOwns) {
-                  ariaProps.ariaOwns = anchorEl ? "simple-menu" : undefined;
-                }
-                if (route.ariaPopup) {
-                  ariaProps.ariaPopup = anchorEl ? "true" : undefined;
-                }
-                return (
-                  <Tab
-                    key={`${route}${index}`}
-                    component={Link}
-                    to={route.link}
-                    label={route.name}
-                    sx={TabStyles}
-                    onMouseOver={route.mouseOver}
-                    {...a11yProps(index)}
-                    {...ariaProps}
-                  />
-                );
-              })}
-            </Tabs>
-            <Button variant="contained" color="secondary" sx={ButtonStyles}>
-              Free Estimate
-            </Button>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={open}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              sx={{
-                "& .MuiPaper-root": {
-                  backgroundColor: (theme) => theme.palette.common.blue,
-                  color: "white",
-                  borderRadius: "0px",
-                },
-              }}
-              MenuListProps={{ onMouseLeave: handleClose }} // mouse leave menu event
-              elevation={0}
-            >
-              {menuOptions.map((option, i) => (
-                <MenuItem
-                  key={`${option}${i}`}
-                  component={Link}
-                  to={option.link}
-                  sx={(theme) => ({
-                    "&.MuiMenuItem-root": {
-                      ...theme.typography.tab,
-                      opacity: 0.7,
-                      "&:hover": {
-                        opacity: 1,
-                      },
-                      "&.Mui-selected": {
-                        backgroundColor: theme.palette.primary.dark,
-                      },
-                    },
-                  })}
-                  onClick={handleMenuItemClick.bind(this, i)}
-                  selected={i === selectedIndex && value === 1}
-                >
-                  {option.name}
-                </MenuItem>
-              ))}
-            </Menu>
+            {matches ? drawer : tabs}
           </Toolbar>
         </AppBar>
       </ElevationScroll>

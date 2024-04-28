@@ -59,3 +59,11 @@ https://mui.com/material-ui/customization/breakpoints/#responsive-styles
 - Media Queries
 - Grid System
 - Breakpoints
+
+### breakpoints
+
+- xs（extra-small）: 小于 600 像素的设备，通常是手机竖屏。
+- sm（small）: 600 像素到 899 像素之间的设备，通常是小型平板电脑或大型智能手机。
+- md（medium）: 900 像素到 1199 像素之间的设备，通常是普通平板电脑或一些笔记本电脑。
+- lg（large）: 1200 像素到 1535 像素之间的设备，通常是台式电脑或大型笔记本电脑。
+- xl（extra-large）: 大于等于 1536 像素的设备，通常是大型显示器或高分辨率笔记本电脑。
