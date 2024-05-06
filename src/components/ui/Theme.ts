@@ -22,6 +22,13 @@ declare module "@mui/material/styles" {
     tab?: React.CSSProperties;
     estimate?: React.CSSProperties;
   }
+  interface BreakpointOverrides {
+    xs: true; // add the `xs` breakpoint
+    sm: true;
+    md: true;
+    lg: true;
+    xl: true;
+  }
 }
 
 // Update the Typography's variant prop options
@@ -33,6 +40,15 @@ declare module "@mui/material/Typography" {
 }
 
 const Theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
   palette: {
     common: {
       blue: arcBlue,
@@ -52,6 +68,7 @@ const Theme = createTheme({
       fontWeight: 700,
       color: "white",
       fontSize: "1rem",
+      padding: "6px 12px", // 另外添加的
     },
     estimate: {
       fontFamily: "Pacifico",

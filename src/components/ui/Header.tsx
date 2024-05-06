@@ -1,7 +1,10 @@
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   Button,
+  IconButton,
   Menu,
   MenuItem,
+  SwipeableDrawer,
   SxProps,
   Theme,
   styled,
@@ -25,6 +28,7 @@ import {
 } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
+
 interface Props {
   children: ReactElement;
 }
@@ -47,10 +51,10 @@ function ElevationScroll(props: Props) {
 
 const LogoImage = styled("img")(({ theme }) => ({
   height: "8em",
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     height: "7em",
   },
-  [theme.breakpoints.down("xs")]: {
+  [theme.breakpoints.down("sm")]: {
     height: "5.5em",
   },
 }));
@@ -58,10 +62,10 @@ const LogoImage = styled("img")(({ theme }) => ({
 const Placeholder = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
   marginBottom: "3em",
-  [theme.breakpoints.down("md")]: {
+  [theme.breakpoints.down("lg")]: {
     marginBottom: "2em",
   },
-  [theme.breakpoints.down("xs")]: {
+  [theme.breakpoints.down("sm")]: {
     marginBottom: "1.25em",
   },
 }));
@@ -99,9 +103,13 @@ function a11yProps(index: number) {
 const Header: FC<HeaderProps> = () => {
   const [value, setValue] = useState(0);
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("md"));
+  const iOS =
+    typeof navigator !== "undefined" &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const matches = useMediaQuery(theme.breakpoints.down("lg"));
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const openMenu = Boolean(anchorEl);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -238,7 +246,7 @@ const Header: FC<HeaderProps> = () => {
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
-        open={open}
+        open={openMenu}
         onClose={handleClose}
         anchorOrigin={{
           vertical: "top",
@@ -285,7 +293,31 @@ const Header: FC<HeaderProps> = () => {
     </Fragment>
   );
 
-  const drawer = <Fragment></Fragment>;
+  const drawer = (
+    <Fragment>
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={openDrawer}
+        onOpen={() => setOpenDrawer(true)}
+        onClose={() => setOpenDrawer(false)}
+      >
+        Example Drawer
+      </SwipeableDrawer>
+      <IconButton
+        sx={{
+          ml: "auto",
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
+        }}
+        onClick={() => setOpenDrawer(!openDrawer)}
+        disableRipple
+      >
+        <MenuIcon sx={{ height: "50px", width: "50px" }} />
+      </IconButton>
+    </Fragment>
+  );
   return (
     <Fragment>
       <ElevationScroll>
