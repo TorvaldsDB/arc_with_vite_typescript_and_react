@@ -90,6 +90,12 @@ const ButtonStyles: SxProps<Theme> = (theme: Theme) => ({
   },
 });
 
+const ListItemStyles: SxProps<Theme> = (theme: Theme) => ({
+  ...theme.typography.tab,
+  color: "white",
+  opacity: 0.7,
+});
+
 const logoButtonStyles: SxProps<Theme> = () => ({
   padding: 0,
   "&:hover": {
@@ -283,7 +289,7 @@ const Header: FC<HeaderProps> = () => {
                   opacity: 1,
                 },
                 "&.Mui-selected": {
-                  backgroundColor: theme.palette.primary.dark,
+                  backgroundColor: "primary.dark",
                 },
               },
             })}
@@ -300,6 +306,12 @@ const Header: FC<HeaderProps> = () => {
   const drawer = (
     <Fragment>
       <SwipeableDrawer
+        sx={{
+          "& .MuiDrawer-paper": {
+            backgroundColor: "common.blue",
+            color: "white",
+          },
+        }}
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         open={openDrawer}
@@ -314,7 +326,9 @@ const Header: FC<HeaderProps> = () => {
               component={Link}
               to="/"
             >
-              <ListItemText disableTypography>Home</ListItemText>
+              <ListItemText sx={ListItemStyles} disableTypography>
+                Home
+              </ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -324,7 +338,9 @@ const Header: FC<HeaderProps> = () => {
               component={Link}
               to="/services"
             >
-              <ListItemText disableTypography>Services</ListItemText>
+              <ListItemText sx={ListItemStyles} disableTypography>
+                Services
+              </ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -334,7 +350,9 @@ const Header: FC<HeaderProps> = () => {
               component={Link}
               to="/revolution"
             >
-              <ListItemText disableTypography>The Revolution</ListItemText>
+              <ListItemText sx={ListItemStyles} disableTypography>
+                The Revolution
+              </ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -344,7 +362,9 @@ const Header: FC<HeaderProps> = () => {
               component={Link}
               to="/about"
             >
-              <ListItemText disableTypography>About Us</ListItemText>
+              <ListItemText sx={ListItemStyles} disableTypography>
+                About Us
+              </ListItemText>
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
@@ -354,31 +374,22 @@ const Header: FC<HeaderProps> = () => {
               component={Link}
               to="/contact"
             >
-              <ListItemText disableTypography>Contact Us</ListItemText>
+              <ListItemText sx={ListItemStyles} disableTypography>
+                Contact Us
+              </ListItemText>
             </ListItemButton>
           </ListItem>
 
-          <ListItem disablePadding>
+          <ListItem sx={{ backgroundColor: "common.orange" }} disablePadding>
             <ListItemButton
               onClick={() => setOpenDrawer(false)}
               divider
               component={Link}
               to="/estimate"
             >
-              <Button
-                variant="contained"
-                color="secondary"
-                sx={{
-                  ...ButtonStyles,
-                  ...{
-                    "&:hover": {
-                      backgroundColor: theme.palette.secondary.light,
-                    },
-                  },
-                }}
-              >
+              <ListItemText sx={ListItemStyles} disableTypography>
                 Free Estimate
-              </Button>
+              </ListItemText>
             </ListItemButton>
           </ListItem>
         </List>
