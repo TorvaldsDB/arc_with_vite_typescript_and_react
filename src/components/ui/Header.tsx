@@ -2,6 +2,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import {
   Button,
   IconButton,
+  ListItem,
+  ListItemButton,
   Menu,
   MenuItem,
   SwipeableDrawer,
@@ -12,6 +14,8 @@ import {
   useTheme,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
+import List from "@mui/material/List";
+import ListItemText from "@mui/material/ListItemText";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
@@ -302,7 +306,82 @@ const Header: FC<HeaderProps> = () => {
         onOpen={() => setOpenDrawer(true)}
         onClose={() => setOpenDrawer(false)}
       >
-        Example Drawer
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setOpenDrawer(false)}
+              divider
+              component={Link}
+              to="/"
+            >
+              <ListItemText disableTypography>Home</ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setOpenDrawer(false)}
+              divider
+              component={Link}
+              to="/services"
+            >
+              <ListItemText disableTypography>Services</ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setOpenDrawer(false)}
+              divider
+              component={Link}
+              to="/revolution"
+            >
+              <ListItemText disableTypography>The Revolution</ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setOpenDrawer(false)}
+              divider
+              component={Link}
+              to="/about"
+            >
+              <ListItemText disableTypography>About Us</ListItemText>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setOpenDrawer(false)}
+              divider
+              component={Link}
+              to="/contact"
+            >
+              <ListItemText disableTypography>Contact Us</ListItemText>
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={() => setOpenDrawer(false)}
+              divider
+              component={Link}
+              to="/estimate"
+            >
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{
+                  ...ButtonStyles,
+                  ...{
+                    "&:hover": {
+                      backgroundColor: theme.palette.secondary.light,
+                    },
+                  },
+                }}
+              >
+                Free Estimate
+              </Button>
+            </ListItemButton>
+          </ListItem>
+        </List>
       </SwipeableDrawer>
       <IconButton
         sx={{
