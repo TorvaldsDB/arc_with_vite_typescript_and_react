@@ -68,7 +68,6 @@ const Theme = createTheme({
       fontWeight: 700,
       color: "white",
       fontSize: "1rem",
-      padding: "6px 12px", // 另外添加的
     },
     estimate: {
       fontFamily: "Pacifico",

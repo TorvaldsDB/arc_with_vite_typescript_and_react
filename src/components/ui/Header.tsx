@@ -78,6 +78,7 @@ const TabStyles: SxProps<Theme> = (theme: Theme) => ({
   ...theme.typography.tab,
   minWidth: 10,
   marginLeft: "25px",
+  padding: "6px 12px", // 另外添加的
 });
 const ButtonStyles: SxProps<Theme> = (theme: Theme) => ({
   ...theme.typography.estimate,
@@ -97,7 +98,7 @@ const ListItemStyles: SxProps<Theme> = (theme: Theme) => ({
 });
 const ListItemSelectedStyles: SxProps<Theme> = (theme: Theme) => ({
   "&.Mui-selected": {
-    backgroundColor: "primary.dark",
+    backgroundColor: theme.palette.primary.dark,
     "& .MuiListItemText-root": {
       opacity: 1,
     },
@@ -280,18 +281,21 @@ const Header: FC<HeaderProps> = () => {
             color: "white",
             borderRadius: "0px",
           },
+          zIndex: theme.zIndex.modal + 2,
         }}
         MenuListProps={{ onMouseLeave: handleClose }} // mouse leave menu event
         elevation={0}
+        // style={{ zIndex: theme.zIndex.modal + 2 }}
       >
         {menuOptions.map((option, i) => (
           <MenuItem
-            key={`${option}${i}`}
+            key={`${option}_${i}`}
             component={Link}
             to={option.link}
             sx={(theme) => ({
               "&.MuiMenuItem-root": {
                 ...theme.typography.tab,
+                padding: "6px 12px", // 另外添加的
                 opacity: 0.7,
                 "&:hover": {
                   opacity: 1,
@@ -326,7 +330,8 @@ const Header: FC<HeaderProps> = () => {
         onOpen={() => setOpenDrawer(true)}
         onClose={() => setOpenDrawer(false)}
       >
-        <List>
+        <Placeholder />
+        <List sx={{ py: 0 }}>
           {routes.map((route, index) => (
             <ListItem disablePadding key={`${route}${index}`}>
               <ListItemButton
@@ -386,7 +391,13 @@ const Header: FC<HeaderProps> = () => {
   return (
     <Fragment>
       <ElevationScroll>
-        <AppBar position="fixed" color="primary">
+        <AppBar
+          position="fixed"
+          color="primary"
+          sx={{
+            zIndex: theme.zIndex.modal + 1,
+          }}
+        >
           <Toolbar disableGutters>
             <Button sx={logoButtonStyles} component={Link} to="/" disableRipple>
               <LogoImage alt="company logo" src={logo} />
