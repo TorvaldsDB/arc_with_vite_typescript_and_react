@@ -95,6 +95,14 @@ const ListItemStyles: SxProps<Theme> = (theme: Theme) => ({
   color: "white",
   opacity: 0.7,
 });
+const ListItemSelectedStyles: SxProps<Theme> = (theme: Theme) => ({
+  "&.Mui-selected": {
+    backgroundColor: "primary.dark",
+    "& .MuiListItemText-root": {
+      opacity: 1,
+    },
+  },
+});
 
 const logoButtonStyles: SxProps<Theme> = () => ({
   padding: 0,
@@ -319,70 +327,37 @@ const Header: FC<HeaderProps> = () => {
         onClose={() => setOpenDrawer(false)}
       >
         <List>
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={() => setOpenDrawer(false)}
-              divider
-              component={Link}
-              to="/"
-            >
-              <ListItemText sx={ListItemStyles} disableTypography>
-                Home
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={() => setOpenDrawer(false)}
-              divider
-              component={Link}
-              to="/services"
-            >
-              <ListItemText sx={ListItemStyles} disableTypography>
-                Services
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={() => setOpenDrawer(false)}
-              divider
-              component={Link}
-              to="/revolution"
-            >
-              <ListItemText sx={ListItemStyles} disableTypography>
-                The Revolution
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={() => setOpenDrawer(false)}
-              divider
-              component={Link}
-              to="/about"
-            >
-              <ListItemText sx={ListItemStyles} disableTypography>
-                About Us
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              onClick={() => setOpenDrawer(false)}
-              divider
-              component={Link}
-              to="/contact"
-            >
-              <ListItemText sx={ListItemStyles} disableTypography>
-                Contact Us
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
+          {routes.map((route, index) => (
+            <ListItem disablePadding key={`${route}${index}`}>
+              <ListItemButton
+                sx={ListItemSelectedStyles}
+                selected={value === route.activeIndex}
+                onClick={() => {
+                  setOpenDrawer(false);
+                  setValue(route.activeIndex);
+                }}
+                divider
+                component={Link}
+                to={route.link}
+              >
+                <ListItemText sx={ListItemStyles} disableTypography>
+                  {route.name}
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))}
 
-          <ListItem sx={{ backgroundColor: "common.orange" }} disablePadding>
+          <ListItem disablePadding>
             <ListItemButton
-              onClick={() => setOpenDrawer(false)}
+              sx={{
+                ...ListItemSelectedStyles,
+                backgroundColor: "common.orange",
+              }}
+              selected={value === 5}
+              onClick={() => {
+                setOpenDrawer(false);
+                setValue(5);
+              }}
               divider
               component={Link}
               to="/estimate"

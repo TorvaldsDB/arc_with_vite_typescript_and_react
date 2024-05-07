@@ -67,3 +67,11 @@ https://mui.com/material-ui/customization/breakpoints/#responsive-styles
 - md（medium）: 900 像素到 1199 像素之间的设备，通常是普通平板电脑或一些笔记本电脑。
 - lg（large）: 1200 像素到 1535 像素之间的设备，通常是台式电脑或大型笔记本电脑。
 - xl（extra-large）: 大于等于 1536 像素的设备，通常是大型显示器或高分辨率笔记本电脑。
+
+## 怎么使用 host 运行
+
+[How to expose 'host' for external device display? · vitejs/vite · Discussion #3396](https://github.com/vitejs/vite/discussions/3396)
+
+```shell
+npm run dev -- --host
+```
