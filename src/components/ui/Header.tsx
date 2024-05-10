@@ -38,6 +38,10 @@ interface Props {
 }
 
 interface HeaderProps {
+  setValue: (value: number) => void;
+  setSelectedIndex: (index: number) => void;
+  value: number;
+  selectedIndex: number;
   children?: ReactElement;
 }
 
@@ -119,8 +123,12 @@ function a11yProps(index: number) {
   };
 }
 
-const Header: FC<HeaderProps> = () => {
-  const [value, setValue] = useState(0);
+const Header: FC<HeaderProps> = ({
+  value,
+  setValue,
+  selectedIndex,
+  setSelectedIndex,
+}) => {
   const theme = useTheme();
   const iOS =
     typeof navigator !== "undefined" &&
@@ -129,7 +137,6 @@ const Header: FC<HeaderProps> = () => {
   const [openDrawer, setOpenDrawer] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
