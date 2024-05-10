@@ -30,7 +30,15 @@
 //   alt="black decorative slash"
 //   src={footerAdornment}
 // />
-import { Box, Grid, SxProps, Theme, styled, useTheme } from "@mui/material";
+import {
+  Box,
+  Grid,
+  SxProps,
+  Theme,
+  styled,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { FC, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import footerAdornment from "../../assets/Footer Adornment.svg";
@@ -74,7 +82,7 @@ const LinkStyles: SxProps<Theme> = (theme: Theme) => ({
 const IconStyles: SxProps<Theme> = (theme: Theme) => ({
   height: "4em",
   width: "4em",
-  [theme.breakpoints.down("xs")]: {
+  [theme.breakpoints.down("sm")]: {
     height: "2.5em",
     width: "2.5em",
   },
@@ -82,183 +90,189 @@ const IconStyles: SxProps<Theme> = (theme: Theme) => ({
 
 const Footer: FC<FooterProps> = ({ setValue, setSelectedIndex }) => {
   const theme = useTheme();
+  // https://mui.com/material-ui/migration/v5-component-changes/#hidden
+  const hidden = useMediaQuery(theme.breakpoints.down("lg"));
+
   return (
     <StyledFooter>
-      <Grid
-        justifyContent="center"
-        container
-        sx={{
-          position: "absolute",
-        }}
-      >
-        <StyledGridItem>
-          <Grid container direction="column" spacing={2}>
-            <Grid
-              item
-              sx={LinkStyles}
-              component={Link}
-              to="/"
-              onClick={() => {
-                setValue(0);
-              }}
-            >
-              Home
+      {hidden ? null : (
+        <Grid
+          justifyContent="center"
+          container
+          sx={{
+            position: "absolute",
+          }}
+        >
+          <StyledGridItem>
+            <Grid container direction="column" spacing={2}>
+              <Grid
+                item
+                sx={LinkStyles}
+                component={Link}
+                to="/"
+                onClick={() => {
+                  setValue(0);
+                }}
+              >
+                Home
+              </Grid>
             </Grid>
-          </Grid>
-        </StyledGridItem>
-        <StyledGridItem>
-          <Grid container direction="column" spacing={2}>
-            <Grid
-              item
-              sx={LinkStyles}
-              component={Link}
-              to="/services"
-              onClick={() => {
-                setValue(1);
-                setSelectedIndex(0);
-              }}
-            >
-              Services
+          </StyledGridItem>
+          <StyledGridItem>
+            <Grid container direction="column" spacing={2}>
+              <Grid
+                item
+                sx={LinkStyles}
+                component={Link}
+                to="/services"
+                onClick={() => {
+                  setValue(1);
+                  setSelectedIndex(0);
+                }}
+              >
+                Services
+              </Grid>
+              <Grid
+                item
+                component={Link}
+                to="/customsoftware"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(1);
+                  setSelectedIndex(1);
+                }}
+              >
+                Custom Software Development
+              </Grid>
+              <Grid
+                item
+                component={Link}
+                to="/mobileapps"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(1);
+                  setSelectedIndex(2);
+                }}
+              >
+                iOS/Android App Development
+              </Grid>
+              <Grid
+                item
+                component={Link}
+                to="/websites"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(1);
+                  setSelectedIndex(3);
+                }}
+              >
+                Website Development
+              </Grid>
             </Grid>
-            <Grid
-              item
-              component={Link}
-              to="/customsoftware"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(1);
-                setSelectedIndex(1);
-              }}
-            >
-              Custom Software Development
+          </StyledGridItem>
+          <StyledGridItem>
+            <Grid container direction="column" spacing={2}>
+              <Grid
+                item
+                component={Link}
+                to="/revolution"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(2);
+                }}
+              >
+                The Revolution
+              </Grid>
+              <Grid
+                item
+                component={Link}
+                to="/revolution"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(2);
+                }}
+              >
+                Vision
+              </Grid>
+              <Grid
+                item
+                component={Link}
+                to="/revolution"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(2);
+                }}
+              >
+                Technology
+              </Grid>
+              <Grid
+                item
+                component={Link}
+                to="/revolution"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(2);
+                }}
+              >
+                Process
+              </Grid>
             </Grid>
-            <Grid
-              item
-              component={Link}
-              to="/mobileapps"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(1);
-                setSelectedIndex(2);
-              }}
-            >
-              iOS/Android App Development
+          </StyledGridItem>
+          <StyledGridItem>
+            <Grid container direction="column" spacing={2}>
+              <Grid
+                item
+                component={Link}
+                to="/about"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(3);
+                }}
+              >
+                About Us
+              </Grid>
+              <Grid
+                item
+                component={Link}
+                to="/about"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(3);
+                }}
+              >
+                History
+              </Grid>
+              <Grid
+                item
+                component={Link}
+                to="/about"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(3);
+                }}
+              >
+                Team
+              </Grid>
             </Grid>
-            <Grid
-              item
-              component={Link}
-              to="/websites"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(1);
-                setSelectedIndex(3);
-              }}
-            >
-              Website Development
+          </StyledGridItem>
+          <StyledGridItem>
+            <Grid container direction="column" spacing={2}>
+              <Grid
+                item
+                component={Link}
+                to="/contact"
+                sx={LinkStyles}
+                onClick={() => {
+                  setValue(4);
+                }}
+              >
+                Contact Us
+              </Grid>
             </Grid>
-          </Grid>
-        </StyledGridItem>
-        <StyledGridItem>
-          <Grid container direction="column" spacing={2}>
-            <Grid
-              item
-              component={Link}
-              to="/revolution"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(2);
-              }}
-            >
-              The Revolution
-            </Grid>
-            <Grid
-              item
-              component={Link}
-              to="/revolution"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(2);
-              }}
-            >
-              Vision
-            </Grid>
-            <Grid
-              item
-              component={Link}
-              to="/revolution"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(2);
-              }}
-            >
-              Technology
-            </Grid>
-            <Grid
-              item
-              component={Link}
-              to="/revolution"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(2);
-              }}
-            >
-              Process
-            </Grid>
-          </Grid>
-        </StyledGridItem>
-        <StyledGridItem>
-          <Grid container direction="column" spacing={2}>
-            <Grid
-              item
-              component={Link}
-              to="/about"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(3);
-              }}
-            >
-              About Us
-            </Grid>
-            <Grid
-              item
-              component={Link}
-              to="/about"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(3);
-              }}
-            >
-              History
-            </Grid>
-            <Grid
-              item
-              component={Link}
-              to="/about"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(3);
-              }}
-            >
-              Team
-            </Grid>
-          </Grid>
-        </StyledGridItem>
-        <StyledGridItem>
-          <Grid container direction="column" spacing={2}>
-            <Grid
-              item
-              component={Link}
-              to="/contact"
-              sx={LinkStyles}
-              onClick={() => {
-                setValue(4);
-              }}
-            >
-              Contact Us
-            </Grid>
-          </Grid>
-        </StyledGridItem>
-      </Grid>
+          </StyledGridItem>
+        </Grid>
+      )}
+
       <Box
         component="img"
         alt="black decorative slash"
@@ -282,8 +296,9 @@ const Footer: FC<FooterProps> = ({ setValue, setSelectedIndex }) => {
           position: "absolute",
           marginTop: "-6em",
           right: "1.5em",
-          [theme.breakpoints.down("xs")]: {
+          [theme.breakpoints.down("sm")]: {
             right: "0.6em",
+            marginTop: "-4em",
           },
         }}
       >
